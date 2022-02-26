@@ -5,8 +5,8 @@ export const AppStyled = styled.div`
   grid: auto-flow / 1fr;
   gap: clamp(4px, 2.1vw, 16px);
 
-  /* flex-direction: column; */
-  /* height: 100%; */
+  max-width: 900px;
+
   padding: ${({ theme }) => theme.spacing(5, 0, 8)};
   margin: 0 auto;
 
