@@ -1,7 +1,8 @@
+import { Provider } from 'react-redux';
+import { store } from 'redux/store';
+
 import { render, StrictMode, ThemeProvider, theme } from 'common';
 import { App } from 'App';
-import { Provider } from 'react-redux';
-import { store } from 'App/store';
 import './index.css';
 
 render(

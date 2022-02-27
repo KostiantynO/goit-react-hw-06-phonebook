@@ -3,23 +3,25 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { ContactFormStyled } from './ContactForm.styled';
 
+const inputsNameProp = { name: 'name', number: 'number' };
+
 export const ContactForm = ({ onSubmit }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const inputs = {
-    name: 'name',
-    number: 'number',
-  };
-
   const handleInputChange = e => {
     const { name, value } = e.target;
 
-    name === inputs.name && setName(value);
-    name === inputs.number && setNumber(value);
+    inputsNameProp.name === name && setName(value);
+    inputsNameProp.number === name && setNumber(value);
   };
 
-  const addContact = e => {
+  const reset = () => {
+    setName('');
+    setNumber('');
+  };
+
+  const submitNewContact = e => {
     e.preventDefault();
 
     const newContact = {
@@ -32,17 +34,16 @@ export const ContactForm = ({ onSubmit }) => {
     }
 
     onSubmit(newContact);
-    setName('');
-    setNumber('');
+    reset();
   };
 
   return (
     <Container>
-      <ContactFormStyled onSubmit={addContact}>
+      <ContactFormStyled onSubmit={submitNewContact}>
         <Label label="Name">
           <Input
             type="text"
-            name={inputs.name}
+            name={inputsNameProp.name}
             value={name}
             onChange={handleInputChange}
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -54,7 +55,7 @@ export const ContactForm = ({ onSubmit }) => {
         <Label label="Number">
           <Input
             type="tel"
-            name={inputs.number}
+            name={inputsNameProp.number}
             value={number}
             onChange={handleInputChange}
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"

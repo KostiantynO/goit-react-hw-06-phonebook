@@ -10,13 +10,15 @@ export const Filter = ({ value, onChangeFilter, onClearFilter }) => (
 
     <Container>
       <div style={{ display: 'flex', gap: 12 }}>
-        <DebouncedInputStyled
-          type="text"
-          name="filter"
-          value={value}
-          onChange={onChangeFilter}
-          debounceTimeout={300}
-        />
+        <Label label="Filter">
+          <DebouncedInputStyled
+            type="text"
+            name="filter"
+            value={value}
+            onChange={onChangeFilter}
+            debounceTimeout={300}
+          />
+        </Label>
 
         <ClearFilterButton display="if" onClick={onClearFilter}>
           Clear filter

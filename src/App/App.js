@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
-import { addContact, deleteContact, setFilter } from 'features/Contacts';
-
-import { save } from 'storage';
+import * as contactsActions from 'redux/contactsSlices';
+import { save } from 'utils/storage';
 import { LS_KEY, Section } from 'common';
 import { ContactForm, ContactList, Filter } from 'components';
 
@@ -29,7 +28,7 @@ export const App = () => {
     );
   };
 
-  const onAddContact = ({ name, number }) => {
+  const onSubmitAddContact = ({ name, number }) => {
     const normalizedNewName = name.toLowerCase();
     const savedContact = contacts.find(
       ({ name }) => name.toLowerCase() === normalizedNewName
@@ -40,22 +39,22 @@ export const App = () => {
     }
 
     const newContact = { name, number };
-    dispatch(addContact(newContact));
+    dispatch(contactsActions.addContact(newContact));
   };
 
   const onDeleteContact = toDeleteId => {
-    dispatch(deleteContact(toDeleteId));
+    dispatch(contactsActions.deleteContact(toDeleteId));
   };
 
-  const changeFilter = e => dispatch(setFilter(e.target.value));
-  const clearFilter = () => dispatch(setFilter(''));
+  const changeFilter = e => dispatch(contactsActions.setFilter(e.target.value));
+  const clearFilter = () => dispatch(contactsActions.setFilter(''));
 
   const visibleContacts = getVisibleContacts();
 
   return (
     <AppStyled>
       <Section title="Phonebook" h="1">
-        <ContactForm onSubmit={onAddContact} />
+        <ContactForm onSubmit={onSubmitAddContact} />
       </Section>
 
       <Section title="Contacts">
