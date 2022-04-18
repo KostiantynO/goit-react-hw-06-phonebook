@@ -1,17 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { combineReducers, createSlice } from '@reduxjs/toolkit';
+import { persistReducer } from 'redux-persist';
 import { nanoid } from 'nanoid';
-import { LS_KEY } from 'common';
-import { load } from 'utils/storage';
-
-const loadContactsFromLocalStorage = () => {
-  const savedContacts = load(LS_KEY);
-  return savedContacts?.length > 0 ? savedContacts : [];
-};
+import storage from 'redux-persist/lib/storage';
 
 // It uses IMMER immutabe state
 export const itemsSlice = createSlice({
   name: 'items',
-  initialState: loadContactsFromLocalStorage(),
+  initialState: [],
   reducers: {
     addContact: {
       reducer: (state, { payload }) =>
@@ -43,3 +38,22 @@ export const filterSlice = createSlice({
 });
 
 export const { setFilter } = filterSlice.actions;
+
+const contactsReducer = combineReducers({
+  [itemsSlice.name]: itemsSlice.reducer,
+  [filterSlice.name]: filterSlice.reducer,
+});
+
+const persistConfig = {
+  key: 'contacts',
+  storage,
+};
+
+export const persistedContactsReducer = persistReducer(
+  persistConfig,
+  contactsReducer
+);
+
+// Selectors
+export const getContactsItems = state => state.contacts.items;
+export const getContactsFilter = state => state.contacts.filter;

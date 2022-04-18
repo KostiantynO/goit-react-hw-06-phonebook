@@ -1,9 +1,14 @@
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
-import * as contactsActions from 'redux/contactsSlices';
-import { save } from 'utils/storage';
-import { LS_KEY, Section } from 'common';
+import {
+  addContact,
+  deleteContact,
+  setFilter,
+  getContactsItems,
+  getContactsFilter,
+} from 'redux/contactsSlices';
+
+import { Section } from 'common';
 import { ContactForm, ContactList, Filter } from 'components';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,12 +16,8 @@ import { AppStyled } from './App.styled';
 
 export const App = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts.items);
-  const storedFilter = useSelector(state => state.contacts.filter);
-
-  useEffect(() => {
-    save(LS_KEY, contacts?.length > 0 ? contacts : []);
-  }, [contacts]);
+  const contacts = useSelector(getContactsItems);
+  const storedFilter = useSelector(getContactsFilter);
 
   const getVisibleContacts = () => {
     const normalizedFilter = storedFilter.toLowerCase();
@@ -39,15 +40,15 @@ export const App = () => {
     }
 
     const newContact = { name, number };
-    dispatch(contactsActions.addContact(newContact));
+    dispatch(addContact(newContact));
   };
 
   const onDeleteContact = toDeleteId => {
-    dispatch(contactsActions.deleteContact(toDeleteId));
+    dispatch(deleteContact(toDeleteId));
   };
 
-  const changeFilter = e => dispatch(contactsActions.setFilter(e.target.value));
-  const clearFilter = () => dispatch(contactsActions.setFilter(''));
+  const changeFilter = e => dispatch(setFilter(e.target.value));
+  const clearFilter = () => dispatch(setFilter(''));
 
   const visibleContacts = getVisibleContacts();
 

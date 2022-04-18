@@ -1,5 +1,6 @@
 import { Provider } from 'react-redux';
-import { store } from 'redux/store';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor, store } from 'redux/store';
 
 import { render, StrictMode, ThemeProvider, theme } from 'common';
 import { App } from 'App';
@@ -10,7 +11,9 @@ render(
     <ThemeProvider theme={theme}>
       {/* <BrowserRouter basename="/goit-react-hw-06-phonebook/"> */}
       <Provider store={store}>
-        <App />
+        <PersistGate loading={null} persistor={persistor}>
+          <App />
+        </PersistGate>
       </Provider>
     </ThemeProvider>
     {/* </BrowserRouter> */}
